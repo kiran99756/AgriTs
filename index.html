@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="home.title">AgriT — AI-powered agricultural guidance</title>
+  <meta name="description" data-i18n-meta-description="home.metaDescription" content="AgriT brings weather, soil, and satellite data together with AI to give farmers clear, local advisory.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-i18n-page-title="home.title">
+
+<header>
+  <nav class="navbar">
+    <a href="index.html" class="brand">
+      <span class="mark">🌾</span> AgriT
+    </a>
+    <div class="nav-links">
+      <a href="index.html" aria-current="page" data-i18n="nav.home">Home</a>
+      <a href="advisory.html" data-i18n="nav.advisory">Farm Advisory</a>
+      <a href="disease.html" data-i18n="nav.disease">Disease Detect</a>
+      <a href="intelligence.html" data-i18n="nav.intelligence">Farm Intelligence</a>
+      <select class="lang-switch" id="langSwitch" aria-label="Language">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="mr">मराठी</option>
+      </select>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<section id="home" class="hero">
+  <div class="hero-text">
+    <span class="hero-kicker" data-i18n="home.heroKicker">AI-powered agricultural intelligence</span>
+    <h1><span data-i18n="home.heroTitle1">Farm decisions,</span><br><span data-i18n="home.heroTitle2">backed by data.</span></h1>
+    <p class="hero-sub" data-i18n="home.heroSub">
+      AgriT combines weather, soil, and satellite data with Google Gemini
+      to turn scattered signals into one clear recommendation for your farm.
+    </p>
+  </div>
+  <div class="hero-buttons">
+    <a href="advisory.html" class="btn primary" data-i18n="home.btnAdvisory">Get Farm Advisory</a>
+    <a href="disease.html" class="btn ghost" data-i18n="home.btnDiagnose">Diagnose a Crop</a>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track"></div>
+</div>
+
+<section id="problem" class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="home.problemEyebrow">The problem</span>
+      <h2 data-i18n="home.problemTitle">Farm decisions shouldn't depend on guesswork.</h2>
+      <p data-i18n="home.problemSub">Weather, soil, satellite imagery, and crop knowledge usually live in separate places. AgriT brings those signals together into one localised, actionable answer.</p>
+    </div>
+    <div class="grid cols-4">
+      <div class="card">
+        <h3 data-i18n="home.problem1Title">Changing weather</h3>
+        <p data-i18n="home.problem1Desc">Unexpected rainfall, heat, and shifting seasons complicate everyday crop decisions.</p>
+      </div>
+      <div class="card">
+        <h3 data-i18n="home.problem2Title">Soil uncertainty</h3>
+        <p data-i18n="home.problem2Desc">Farmers need clear, actionable information about soil health and crop requirements.</p>
+      </div>
+      <div class="card">
+        <h3 data-i18n="home.problem3Title">Crop diseases</h3>
+        <p data-i18n="home.problem3Desc">Disease identification often happens too late to prevent yield loss.</p>
+      </div>
+      <div class="card">
+        <h3 data-i18n="home.problem4Title">Fragmented data</h3>
+        <p data-i18n="home.problem4Desc">Weather, soil, satellite, and agronomic information usually exist in separate systems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="contour"></div>
+
+<section id="how" class="section tight dark">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="color:#D8A94F" data-i18n="home.howEyebrow">How it works</span>
+      <h2 data-i18n="home.howTitle">From raw signal to a plain recommendation.</h2>
+    </div>
+    <div class="process" style="border-color:rgba(255,255,255,0.12)">
+      <div class="process-step" style="background:var(--night-card); border-color:rgba(255,255,255,0.1)">
+        <span class="num">01</span>
+        <h4 style="color:#fff" data-i18n="home.step1Title">Farm information</h4>
+        <p style="color:#B9C2AE; margin-top:8px; font-size:0.9rem" data-i18n="home.step1Desc">You share location, crop, and soil type.</p>
+      </div>
+      <div class="process-step" style="background:var(--night-card); border-color:rgba(255,255,255,0.1)">
+        <span class="num">02</span>
+        <h4 style="color:#fff" data-i18n="home.step2Title">Soil + weather + satellite</h4>
+        <p style="color:#B9C2AE; margin-top:8px; font-size:0.9rem" data-i18n="home.step2Desc">AgriT pulls current conditions for that exact location.</p>
+      </div>
+      <div class="process-step" style="background:var(--night-card); border-color:rgba(255,255,255,0.1)">
+        <span class="num">03</span>
+        <h4 style="color:#fff" data-i18n="home.step3Title">Gemini AI analysis</h4>
+        <p style="color:#B9C2AE; margin-top:8px; font-size:0.9rem" data-i18n="home.step3Desc">The signals are combined and reasoned over together.</p>
+      </div>
+      <div class="process-step" style="background:var(--night-card); border-color:rgba(255,255,255,0.1)">
+        <span class="num">04</span>
+        <h4 style="color:#fff" data-i18n="home.step4Title">Actionable advisory</h4>
+        <p style="color:#B9C2AE; margin-top:8px; font-size:0.9rem" data-i18n="home.step4Desc">You get one clear recommendation, not raw data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="main" class="section">
+  <div class="wrap">
+    <div class="section-head center" style="margin-left:auto;margin-right:auto;text-align:center;">
+      <span class="eyebrow" data-i18n="home.mainEyebrow">Main features</span>
+      <h2 data-i18n="home.mainTitle">Three tools. One farm.</h2>
+    </div>
+    <div class="grid cols-3">
+      <div class="card feature">
+        <h3 data-i18n="home.feature1Title">AI Farm Advisory</h3>
+        <p data-i18n="home.feature1Desc">Get recommendations based on your farm's location, crop, soil, and current environmental conditions.</p>
+        <a href="advisory.html" class="btn primary" data-i18n="home.feature1Btn">Explore Advisory →</a>
+      </div>
+      <div class="card feature">
+        <h3 data-i18n="home.feature2Title">Disease Detection</h3>
+        <p data-i18n="home.feature2Desc">Upload a crop photo for an AI-powered preliminary disease assessment and treatment guidance.</p>
+        <a href="disease.html" class="btn primary" data-i18n="home.feature2Btn">Check Crop →</a>
+      </div>
+      <div class="card feature">
+        <h3 data-i18n="home.feature3Title">Farm Intelligence</h3>
+        <p data-i18n="home.feature3Desc">Explore satellite-derived crop-health indicators and environmental conditions for your fields.</p>
+        <a href="intelligence.html" class="btn primary" data-i18n="home.feature3Btn">View Intelligence →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tech" class="section tight">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="home.techEyebrow">Technology</span>
+      <h2 data-i18n="home.techTitle">Built on infrastructure that scales with a season.</h2>
+    </div>
+    <div class="grid cols-3">
+      <div class="tech-item card">
+        <span class="icon">Ge</span>
+        <div><h3>Gemini</h3><p data-i18n="home.techGeminiDesc">AI advisory &amp; multimodal analysis</p></div>
+      </div>
+      <div class="tech-item card">
+        <span class="icon">EE</span>
+        <div><h3>Earth Engine</h3><p data-i18n="home.techEarthEngineDesc">Satellite intelligence</p></div>
+      </div>
+      <div class="tech-item card">
+        <span class="icon">Fb</span>
+        <div><h3>Firebase</h3><p data-i18n="home.techFirebaseDesc">Data &amp; authentication</p></div>
+      </div>
+      <div class="tech-item card">
+        <span class="icon">GM</span>
+        <div><h3>Google Maps</h3><p data-i18n="home.techMapsDesc">Location intelligence</p></div>
+      </div>
+      <div class="tech-item card">
+        <span class="icon">CR</span>
+        <div><h3>Cloud Run</h3><p data-i18n="home.techCloudRunDesc">Scalable backend</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cta" class="section">
+  <div class="wrap">
+    <div class="cta">
+      <h2><span data-i18n="home.ctaTitle1">Better data. Better decisions.</span><br><span data-i18n="home.ctaTitle2">Better farming.</span></h2>
+      <div class="btn-row">
+        <a href="advisory.html" class="btn gold" data-i18n="home.btnAdvisory">Get Farm Advisory</a>
+        <a href="disease.html" class="btn on-dark" data-i18n="disease.submitBtn">Diagnose Crop</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h2>AgriT</h2>
+      <p style="color:#8FA07E" data-i18n="footer.tagline">AI-powered agricultural intelligence for a climate-resilient India.</p>
+    </div>
+    <div>
+      <h4 data-i18n="footer.navigate">Navigate</h4>
+      <ul class="footer-links">
+        <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+        <li><a href="advisory.html" data-i18n="nav.advisory">Farm Advisory</a></li>
+        <li><a href="disease.html" data-i18n="footer.disease">Disease Detection</a></li>
+        <li><a href="intelligence.html" data-i18n="nav.intelligence">Farm Intelligence</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="footer.technology">Technology</h4>
+      <ul class="footer-links">
+        <li><a href="https://gemini.google.com/app">Gemini AI</a></li>
+        <li><a href="https://earthengine.google.com/">Earth Engine</a></li>
+        <li><a href="https://firebase.google.com/">Firebase</a></li>
+        <li><a href="https://cloud.google.com/">Google Cloud</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2026 AgriT AI</span>
+    <span data-i18n="footer.madefor">Made for farmers, powered by open agri-data.</span>
+  </div>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="disease.title">Disease Detection — AgriT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-i18n-page-title="disease.title">
+
+<header>
+  <nav class="navbar">
+    <a href="index.html" class="brand"><span class="mark">🌾</span> AgriT</a>
+    <div class="nav-links">
+      <a href="index.html" data-i18n="nav.home">Home</a>
+      <a href="advisory.html" data-i18n="nav.advisory">Farm Advisory</a>
+      <a href="disease.html" aria-current="page" data-i18n="nav.disease">Disease Detect</a>
+      <a href="intelligence.html" data-i18n="nav.intelligence">Farm Intelligence</a>
+      <select class="lang-switch" id="langSwitch" aria-label="Language">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="mr">मराठी</option>
+      </select>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<div class="ticker" aria-hidden="true"><div class="ticker-track"></div></div>
+
+<section class="tool-hero">
+  <span class="eyebrow" data-i18n="disease.eyebrow">Disease Detection</span>
+  <h1 data-i18n="disease.heroTitle">Photograph the leaf. Get a preliminary read in seconds.</h1>
+  <p data-i18n="disease.heroSub">Upload a clear photo of the affected leaf or plant. Gemini's multimodal analysis compares it against known crop-disease patterns and suggests next steps.</p>
+</section>
+
+<section class="tool-layout">
+  <form class="panel" id="diseaseForm" novalidate>
+    <h3 data-i18n="disease.formTitle">Crop photo</h3>
+
+    <div class="field">
+      <label for="diseaseCrop"><span data-i18n="disease.cropLabel">Crop</span> <span style="font-weight:400;color:var(--ink-soft)" data-i18n="disease.cropOptionalHint">(optional, improves accuracy)</span></label>
+      <select id="diseaseCrop" name="crop">
+        <option value="" data-i18n="disease.notSureSkip">Not sure / skip</option>
+        <option data-i18n="crop.wheat">Wheat</option>
+        <option data-i18n="crop.rice">Rice</option>
+        <option data-i18n="crop.cotton">Cotton</option>
+        <option data-i18n="crop.sugarcane">Sugarcane</option>
+        <option data-i18n="crop.maize">Maize</option>
+        <option data-i18n="crop.tomato">Tomato</option>
+        <option data-i18n="crop.other">Other</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label data-i18n="disease.photoLabel">Leaf or plant photo</label>
+      <label class="dropzone" id="dropzone" for="fileInput">
+        <strong data-i18n="disease.dropzoneStrong">Click to upload</strong> <span data-i18n="disease.dropzoneRest">or drag a photo here</span><br>
+        <span data-i18n="disease.dropzoneHint">JPG or PNG, close-up of the affected area works best</span>
+        <input type="file" id="fileInput" accept="image/png, image/jpeg">
+      </label>
+      <img class="preview-img" id="previewImg" alt="Selected crop photo preview">
+    </div>
+
+    <button type="submit" class="btn primary" id="diseaseSubmit" style="width:100%; justify-content:center;" disabled data-i18n="disease.submitBtn">
+      Diagnose Crop
+    </button>
+
+    
+  </form>
+
+  <div class="panel result" id="resultPanel">
+    <div class="error-box" id="diseaseError"></div>
+
+    <div class="result-empty" id="diseaseEmpty">
+      <span class="glyph">🔍</span>
+      <span data-i18n="disease.resultEmpty">Upload a photo to run a preliminary assessment.</span>
+    </div>
+
+    <div class="loading" id="diseaseLoading">
+      <span class="spinner"></span> <span data-i18n="disease.loading">Analysing image with Gemini…</span>
+    </div>
+
+    <div class="result-body" id="diseaseResult">
+      <span class="badge" id="diseaseBadge" data-i18n="disease.badge">Assessment</span>
+      <h3 id="diseaseName" style="margin-top:6px;"></h3>
+      <div class="stat-card" style="margin-bottom:20px; width:fit-content;">
+        <span class="label" data-i18n="disease.confidenceLabel">Confidence</span>
+        <span class="value" id="diseaseConfidence"></span>
+      </div>
+
+      <div class="result-block">
+        <h4 data-i18n="disease.whatWeSee">What we see</h4>
+        <p id="diseaseDescription"></p>
+      </div>
+      <div class="result-block">
+        <h4 data-i18n="disease.suggestedTreatment">Suggested treatment</h4>
+        <p id="diseaseTreatment"></p>
+      </div>
+      <p style="font-size:0.8rem;color:var(--ink-soft);" data-i18n="disease.disclaimer">
+        Preliminary AI assessment only — for anything spreading fast or affecting most of the field, confirm with your local agricultural officer.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h2>AgriT</h2>
+      <p style="color:#8FA07E" data-i18n="footer.tagline">AI-powered agricultural intelligence for a climate-resilient India.</p>
+    </div>
+    <div>
+      <h4 data-i18n="footer.navigate">Navigate</h4>
+      <ul class="footer-links">
+        <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+        <li><a href="advisory.html" data-i18n="nav.advisory">Farm Advisory</a></li>
+        <li><a href="disease.html" data-i18n="footer.disease">Disease Detection</a></li>
+        <li><a href="intelligence.html" data-i18n="nav.intelligence">Farm Intelligence</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="footer.technology">Technology</h4>
+      <ul class="footer-links">
+        <li><a href="https://gemini.google.com/app">Gemini AI</a></li>
+        <li><a href="https://earthengine.google.com/">Earth Engine</a></li>
+        <li><a href="https://firebase.google.com/">Firebase</a></li>
+        <li><a href="https://cloud.google.com/">Google Cloud</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2026 AgriT AI</span>
+    <span data-i18n="footer.madefor">Made for farmers, powered by open agri-data.</span>
+  </div>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/script.js"></script>
+<script src="js/api.js"></script>
+<script>
+  const dropzone = document.getElementById("dropzone");
+  const fileInput = document.getElementById("fileInput");
+  const previewImg = document.getElementById("previewImg");
+  const diseaseSubmit = document.getElementById("diseaseSubmit");
+  const diseaseForm = document.getElementById("diseaseForm");
+
+  const emptyState = document.getElementById("diseaseEmpty");
+  const loadingState = document.getElementById("diseaseLoading");
+  const resultState = document.getElementById("diseaseResult");
+  const errorBox = document.getElementById("diseaseError");
+  const badge = document.getElementById("diseaseBadge");
+
+  let imageBase64 = null;
+
+  function handleFile(file) {
+    if (!file || !file.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      imageBase64 = reader.result;
+      previewImg.src = imageBase64;
+      previewImg.classList.add("show");
+      diseaseSubmit.disabled = false;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  fileInput.addEventListener("change", (e) => handleFile(e.target.files[0]));
+
+  ["dragover", "dragenter"].forEach((evt) =>
+    dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.add("drag"); })
+  );
+  ["dragleave", "drop"].forEach((evt) =>
+    dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.remove("drag"); })
+  );
+  dropzone.addEventListener("drop", (e) => handleFile(e.dataTransfer.files[0]));
+
+  diseaseForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!imageBase64) return;
+
+    errorBox.classList.remove("show");
+    resultState.classList.remove("show");
+    emptyState.style.display = "none";
+    loadingState.classList.add("show");
+    diseaseSubmit.disabled = true;
+
+    try {
+      const data = await diagnoseCrop({
+        imageBase64,
+        crop: document.getElementById("diseaseCrop").value
+      });
+      document.getElementById("diseaseName").textContent = data.disease;
+      document.getElementById("diseaseConfidence").innerHTML =
+        `${Math.round(data.confidence * 100)}<small>%</small>`;
+      document.getElementById("diseaseDescription").textContent = data.description;
+      document.getElementById("diseaseTreatment").textContent = data.treatment;
+      badge.textContent = data.demo ? agritT("disease.badgeDemo") : agritT("disease.badge");
+      badge.className = "badge" + (data.demo ? " demo" : "");
+      resultState.classList.add("show");
+    } catch (err) {
+      errorBox.textContent = agritT("disease.errorMsg");
+      errorBox.classList.add("show");
+      emptyState.style.display = "block";
+    } finally {
+      loadingState.classList.remove("show");
+      diseaseSubmit.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

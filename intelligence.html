@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="intelligence.title">Farm Intelligence — AgriT</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body data-i18n-page-title="intelligence.title">
+
+<header>
+  <nav class="navbar">
+    <a href="index.html" class="brand">
+      <span class="mark">🌾</span> AgriT
+    </a>
+
+```
+<div class="nav-links">
+  <a href="index.html" data-i18n="nav.home">Home</a>
+  <a href="advisory.html" data-i18n="nav.advisory">Farm Advisory</a>
+  <a href="disease.html" data-i18n="nav.disease">Disease Detect</a>
+  <a href="intelligence.html" aria-current="page" data-i18n="nav.intelligence">
+    Farm Intelligence
+  </a>
+
+  <select class="lang-switch" id="langSwitch" aria-label="Language">
+    <option value="en">English</option>
+    <option value="hi">हिंदी</option>
+    <option value="mr">मराठी</option>
+  </select>
+</div>
+
+<button
+  class="nav-toggle"
+  aria-label="Toggle menu"
+  aria-expanded="false"
+>
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+```
+
+  </nav>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track"></div>
+</div>
+
+<section class="tool-hero">
+  <span class="eyebrow" data-i18n="intelligence.eyebrow">
+    Farm Intelligence
+  </span>
+
+  <h1 data-i18n="intelligence.heroTitle">
+    See your field the way a satellite does.
+  </h1>
+
+  <p data-i18n="intelligence.heroSub">
+    Pull vegetation health, soil moisture, and short-term conditions for any
+    location, and track how crop health has trended over the last few passes.
+  </p>
+</section>
+
+<section class="tool-layout">
+
+  <!-- Location form -->
+
+  <form class="panel" id="intelForm" novalidate>
+
+```
+<h3 data-i18n="intelligence.formTitle">
+  Location
+</h3>
+
+<div class="field">
+
+  <label
+    for="intelLocation"
+    data-i18n="intelligence.locationLabel"
+  >
+    Farm location
+  </label>
+
+  <div class="location-row">
+
+    <input
+      type="text"
+      id="intelLocation"
+      name="location"
+      data-i18n-placeholder="intelligence.locationPlaceholder"
+      placeholder="Village, district or lat, long"
+      required
+    >
+
+    <button
+      type="button"
+      class="btn ghost icon-btn"
+      id="intelLocationBtn"
+      data-i18n-title="intelligence.locationLabel"
+      title="Use my current location"
+    >
+      📍
+    </button>
+
+  </div>
+
+  <p
+    class="hint"
+    data-i18n="intelligence.locationHint"
+  >
+    We'll fetch the latest field indicators for this point.
+  </p>
+
+</div>
+
+<button
+  type="submit"
+  class="btn primary"
+  id="intelSubmit"
+  style="width:100%; justify-content:center;"
+  data-i18n="intelligence.submitBtn"
+>
+  Load Field Data
+</button>
+```
+
+  </form>
+
+  <!-- Results -->
+
+  <div class="panel result" id="resultPanel">
+
+```
+<div
+  class="error-box"
+  id="intelError"
+></div>
+
+
+<!-- Empty state -->
+<div
+  class="result-empty"
+  id="intelEmpty"
+>
+  <span class="glyph">🛰️</span>
+
+  <span data-i18n="intelligence.resultEmpty">
+    Enter a location to load current field indicators.
+  </span>
+</div>
+
+
+<!-- Loading -->
+<div
+  class="loading"
+  id="intelLoading"
+>
+  <span class="spinner"></span>
+
+  <span data-i18n="intelligence.loading">
+    Loading field intelligence…
+  </span>
+</div>
+
+
+<!-- Result -->
+<div
+  class="result-body"
+  id="intelResult"
+>
+
+  <!-- Normal field data badge -->
+  <span
+    class="badge"
+    id="intelBadge"
+    data-i18n="intelligence.badge"
+  >
+    Field data
+  </span>
+
+
+  <div
+    class="stat-grid"
+    style="margin-top:14px;"
+  >
+
+    <div class="stat-card">
+
+      <span
+        class="label"
+        data-i18n="intelligence.ndviLabel"
+      >
+        NDVI
+      </span>
+
+      <span
+        class="value"
+        id="statNdvi"
+      >
+        —
+      </span>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <span
+        class="label"
+        data-i18n="intelligence.moistureLabel"
+      >
+        Soil moisture
+      </span>
+
+      <span
+        class="value"
+        id="statMoisture"
+      >
+        —
+      </span>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <span
+        class="label"
+        data-i18n="intelligence.tempLabel"
+      >
+        Air temp
+      </span>
+
+      <span
+        class="value"
+        id="statTemp"
+      >
+        —
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- NDVI chart -->
+  <div class="result-block">
+
+    <h4 data-i18n="intelligence.ndviTrend">
+      NDVI trend · last 6 passes
+    </h4>
+
+    <canvas
+      id="ndviChart"
+      width="480"
+      height="180"
+    ></canvas>
+
+  </div>
+
+
+  <!-- Rainfall -->
+  <div class="result-block">
+
+    <h4 data-i18n="intelligence.rainfallTitle">
+      Rainfall (7 days)
+    </h4>
+
+    <p id="statRainfall"></p>
+
+  </div>
+
+</div>
+```
+
+  </div>
+
+</section>
+
+<footer>
+
+  <div class="footer-grid">
+
+```
+<div>
+
+  <h2>AgriT</h2>
+
+  <p
+    style="color:#8FA07E"
+    data-i18n="footer.tagline"
+  >
+    AI-powered agricultural intelligence for a climate-resilient India.
+  </p>
+
+</div>
+
+
+<div>
+
+  <h4 data-i18n="footer.navigate">
+    Navigate
+  </h4>
+
+  <ul class="footer-links">
+
+    <li>
+      <a href="index.html" data-i18n="nav.home">
+        Home
+      </a>
+    </li>
+
+    <li>
+      <a href="advisory.html" data-i18n="nav.advisory">
+        Farm Advisory
+      </a>
+    </li>
+
+    <li>
+      <a href="disease.html" data-i18n="footer.disease">
+        Disease Detection
+      </a>
+    </li>
+
+    <li>
+      <a
+        href="intelligence.html"
+        data-i18n="nav.intelligence"
+      >
+        Farm Intelligence
+      </a>
+    </li>
+
+  </ul>
+
+</div>
+
+
+<div>
+
+  <h4 data-i18n="footer.technology">
+    Technology
+  </h4>
+
+  <ul class="footer-links">
+
+    <li>
+      <a href="https://gemini.google.com/app">
+        Gemini AI
+      </a>
+    </li>
+
+    <li>
+      <a href="https://earthengine.google.com/">
+        Earth Engine
+      </a>
+    </li>
+
+    <li>
+      <a href="https://firebase.google.com/">
+        Firebase
+      </a>
+    </li>
+
+    <li>
+      <a href="https://cloud.google.com/">
+        Google Cloud
+      </a>
+    </li>
+
+  </ul>
+
+</div>
+```
+
+  </div>
+
+  <div class="footer-bottom">
+
+```
+<span data-i18n="footer.copyright">
+  © 2026 AgriT AI
+</span>
+
+<span data-i18n="footer.madefor">
+  Made for farmers, powered by open agri-data.
+</span>
+```
+
+  </div>
+
+</footer>
+
+<script src="js/i18n.js"></script>
+
+<script src="js/script.js"></script>
+
+<script src="js/api.js"></script>
+
+<script>
+
+  const intelForm = document.getElementById("intelForm");
+  const intelSubmit = document.getElementById("intelSubmit");
+
+  const emptyState = document.getElementById("intelEmpty");
+  const loadingState = document.getElementById("intelLoading");
+  const resultState = document.getElementById("intelResult");
+
+  const errorBox = document.getElementById("intelError");
+
+  const badge = document.getElementById("intelBadge");
+
+
+  // -------------------------------------------------------------------------
+  // Current location
+  // -------------------------------------------------------------------------
+
+  document
+    .getElementById("intelLocationBtn")
+    .addEventListener("click", () => {
+
+      if (!navigator.geolocation) {
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+
+          document.getElementById("intelLocation").value =
+            `${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+
+        },
+        () => {}
+      );
+
+    });
+
+
+  // -------------------------------------------------------------------------
+  // NDVI chart
+  // -------------------------------------------------------------------------
+
+  function drawNdviChart(history) {
+
+    const canvas = document.getElementById("ndviChart");
+
+    const ctx = canvas.getContext("2d");
+
+    const w = canvas.width;
+    const h = canvas.height;
+
+    const pad = 24;
+
+    ctx.clearRect(
+      0,
+      0,
+      w,
+      h
+    );
+
+
+    // Grid
+
+    ctx.strokeStyle =
+      "rgba(35,41,27,0.12)";
+
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i <= 3; i++) {
+
+      const y =
+        pad +
+        (i * (h - pad * 2)) / 3;
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        pad,
+        y
+      );
+
+      ctx.lineTo(
+        w - pad,
+        y
+      );
+
+      ctx.stroke();
+
+    }
+
+
+    // Prevent division by zero
+    const divisor =
+      Math.max(
+        history.length - 1,
+        1
+      );
+
+    const stepX =
+      (w - pad * 2) /
+      divisor;
+
+
+    // Line
+
+    ctx.strokeStyle =
+      "#35592E";
+
+    ctx.lineWidth = 2.5;
+
+    ctx.beginPath();
+
+    history.forEach(
+      (v, i) => {
+
+        const x =
+          pad +
+          i * stepX;
+
+        const y =
+          h -
+          pad -
+          v *
+            (h - pad * 2);
+
+        if (i === 0) {
+          ctx.moveTo(
+            x,
+            y
+          );
+        } else {
+          ctx.lineTo(
+            x,
+            y
+          );
+        }
+
+      }
+    );
+
+    ctx.stroke();
+
+
+    // Points
+
+    ctx.fillStyle =
+      "#C8912E";
+
+    history.forEach(
+      (v, i) => {
+
+        const x =
+          pad +
+          i * stepX;
+
+        const y =
+          h -
+          pad -
+          v *
+            (h - pad * 2);
+
+        ctx.beginPath();
+
+        ctx.arc(
+          x,
+          y,
+          4,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+      }
+    );
+
+  }
+
+
+  // -------------------------------------------------------------------------
+  // Intelligence form
+  // -------------------------------------------------------------------------
+
+  intelForm.addEventListener(
+    "submit",
+    async (e) => {
+
+      e.preventDefault();
+
+
+      errorBox.classList.remove(
+        "show"
+      );
+
+      resultState.classList.remove(
+        "show"
+      );
+
+      emptyState.style.display =
+        "none";
+
+      loadingState.classList.add(
+        "show"
+      );
+
+      intelSubmit.disabled =
+        true;
+
+
+      try {
+
+        const location =
+          document
+            .getElementById(
+              "intelLocation"
+            )
+            .value
+            .trim();
+
+
+        if (!location) {
+
+          throw new Error(
+            "Please enter a farm location."
+          );
+
+        }
+
+
+        // Call the connected backend.
+
+        const data =
+          await getFarmIntelligence({
+            location: location
+          });
+
+
+        // ---------------------------------------------------------------
+        // Validate backend response
+        // ---------------------------------------------------------------
+
+        const ndvi =
+          Number(data.ndvi);
+
+        const moisture =
+          Number(data.soilMoisture);
+
+        const temperature =
+          Number(data.temperature);
+
+        const rainfall =
+          Number(data.rainfall);
+
+
+        if (
+          !Number.isFinite(ndvi) ||
+          !Number.isFinite(moisture) ||
+          !Number.isFinite(temperature) ||
+          !Number.isFinite(rainfall)
+        ) {
+
+          throw new Error(
+            "The backend returned invalid field data."
+          );
+
+        }
+
+
+        // ---------------------------------------------------------------
+        // Display values
+        // ---------------------------------------------------------------
+
+        document.getElementById(
+          "statNdvi"
+        ).textContent =
+          ndvi.toFixed(2);
+
+
+        document.getElementById(
+          "statMoisture"
+        ).innerHTML =
+          `${moisture}<small>%</small>`;
+
+
+        document.getElementById(
+          "statTemp"
+        ).innerHTML =
+          `${temperature}<small>°C</small>`;
+
+
+        document.getElementById(
+          "statRainfall"
+        ).textContent =
+          agritT(
+            "intelligence.rainfallText",
+            {
+              mm: rainfall
+            }
+          );
+
+
+        // ---------------------------------------------------------------
+        // Always show normal field-data badge.
+        // The old "Demo data" badge is intentionally removed.
+        // ---------------------------------------------------------------
+
+        badge.textContent =
+          agritT(
+            "intelligence.badge"
+          );
+
+        badge.className =
+          "badge";
+
+
+        // ---------------------------------------------------------------
+        // Display results
+        // ---------------------------------------------------------------
+
+        resultState.classList.add(
+          "show"
+        );
+
+
+        // Make sure the backend always gives us an array.
+
+        let history =
+          Array.isArray(
+            data.ndviHistory
+          )
+            ? data.ndviHistory
+            : [];
+
+
+        history =
+          history
+            .map(Number)
+            .filter(
+              Number.isFinite
+            );
+
+
+        if (history.length !== 6) {
+
+          history =
+            Array(6).fill(
+              ndvi
+            );
+
+        }
+
+
+        drawNdviChart(
+          history
+        );
+
+      } catch (err) {
+
+        console.error(
+          "Farm intelligence error:",
+          err
+        );
+
+
+        errorBox.textContent =
+          err?.message ||
+          agritT(
+            "intelligence.errorMsg"
+          );
+
+
+        errorBox.classList.add(
+          "show"
+        );
+
+
+        emptyState.style.display =
+          "block";
+
+      } finally {
+
+        loadingState.classList.remove(
+          "show"
+        );
+
+        intelSubmit.disabled =
+          false;
+
+      }
+
+    }
+  );
+
+</script>
+
+</body>
+</html>

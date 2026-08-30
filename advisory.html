@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="advisory.title">Farm Advisory — AgriT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-i18n-page-title="advisory.title">
+
+<header>
+  <nav class="navbar">
+    <a href="index.html" class="brand"><span class="mark">🌾</span> AgriT</a>
+    <div class="nav-links">
+      <a href="index.html" data-i18n="nav.home">Home</a>
+      <a href="advisory.html" aria-current="page" data-i18n="nav.advisory">Farm Advisory</a>
+      <a href="disease.html" data-i18n="nav.disease">Disease Detect</a>
+      <a href="intelligence.html" data-i18n="nav.intelligence">Farm Intelligence</a>
+      <select class="lang-switch" id="langSwitch" aria-label="Language">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="mr">मराठी</option>
+      </select>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<div class="ticker" aria-hidden="true"><div class="ticker-track"></div></div>
+
+<section class="tool-hero">
+  <span class="eyebrow" data-i18n="advisory.eyebrow">Farm Advisory</span>
+  <h1 data-i18n="advisory.heroTitle">Tell us about your field. We'll tell you what to do next.</h1>
+  <p data-i18n="advisory.heroSub">AgriT reads your location's weather and soil conditions alongside your crop stage, then asks Gemini for one clear recommendation — not raw numbers.</p>
+</section>
+
+<section class="tool-layout">
+  <form class="panel" id="advisoryForm" novalidate>
+    <h3 data-i18n="advisory.formTitle">Farm details</h3>
+
+    <div class="field">
+      <label for="location" data-i18n="advisory.locationLabel">Farm location</label>
+      <div class="location-row">
+        <input type="text" id="location" name="location" data-i18n-placeholder="advisory.locationPlaceholder" placeholder="Village, district or lat, long" required>
+        <button type="button" class="btn ghost icon-btn" id="useLocationBtn" data-i18n-title="advisory.locationLabel" title="Use my current location">📍</button>
+      </div>
+      <p class="hint" data-i18n="advisory.locationHint">Used to pull local weather and satellite data.</p>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="crop" data-i18n="advisory.cropLabel">Crop</label>
+        <select id="crop" name="crop" required>
+          <option value="" data-i18n="advisory.selectCrop">Select crop</option>
+          <option data-i18n="crop.wheat">Wheat</option>
+          <option data-i18n="crop.rice">Rice</option>
+          <option data-i18n="crop.cotton">Cotton</option>
+          <option data-i18n="crop.sugarcane">Sugarcane</option>
+          <option data-i18n="crop.maize">Maize</option>
+          <option data-i18n="crop.soybean">Soybean</option>
+          <option data-i18n="crop.other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="soilType" data-i18n="advisory.soilLabel">Soil type</label>
+        <select id="soilType" name="soilType" required>
+          <option value="" data-i18n="advisory.selectSoil">Select soil type</option>
+          <option data-i18n="soil.alluvial">Alluvial</option>
+          <option data-i18n="soil.black">Black (regur)</option>
+          <option data-i18n="soil.redLaterite">Red &amp; laterite</option>
+          <option data-i18n="soil.sandyLoam">Sandy loam</option>
+          <option data-i18n="soil.clay">Clay</option>
+          <option data-i18n="soil.notSure">Not sure</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="notes"><span data-i18n="advisory.notesLabel">Anything else worth knowing?</span> <span style="font-weight:400;color:var(--ink-soft)" data-i18n="advisory.notesOptional">(optional)</span></label>
+      <textarea id="notes" name="notes" data-i18n-placeholder="advisory.notesPlaceholder" placeholder="e.g. sown 3 weeks ago, irrigated by canal, noticed yellowing on lower leaves…"></textarea>
+    </div>
+
+    <button type="submit" class="btn primary" id="advisorySubmit" style="width:100%; justify-content:center;" data-i18n="advisory.submitBtn">
+      Get Advisory
+    </button>
+
+    
+  </form>
+
+  <div class="panel result" id="resultPanel">
+    <div class="error-box" id="advisoryError"></div>
+
+    <div class="result-empty" id="advisoryEmpty">
+      <span class="glyph">🌱</span>
+      <span data-i18n="advisory.resultEmpty">Fill in your farm details and get your first advisory.</span>
+    </div>
+
+    <div class="loading" id="advisoryLoading">
+      <span class="spinner"></span> <span data-i18n="advisory.loading">Reading soil, weather and satellite data…</span>
+    </div>
+
+    <div class="result-body" id="advisoryResult">
+      <span class="badge" id="advisoryBadge" data-i18n="advisory.badge">Advisory</span>
+      <p id="advisorySummary" style="font-size:1.02rem; color:var(--ink); margin-bottom:22px;"></p>
+
+      <div class="result-block">
+        <h4 data-i18n="advisory.irrigation">Irrigation</h4>
+        <p id="advIrrigation"></p>
+      </div>
+      <div class="result-block">
+        <h4 data-i18n="advisory.fertilization">Fertilization</h4>
+        <p id="advFertilization"></p>
+      </div>
+      <div class="result-block">
+        <h4 data-i18n="advisory.pestRisk">Pest risk</h4>
+        <p id="advPestRisk"></p>
+      </div>
+      <div class="result-block">
+        <h4 data-i18n="advisory.timing">Timing</h4>
+        <p id="advTiming"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h2>AgriT</h2>
+      <p style="color:#8FA07E" data-i18n="footer.tagline">AI-powered agricultural intelligence for a climate-resilient India.</p>
+    </div>
+    <div>
+      <h4 data-i18n="footer.navigate">Navigate</h4>
+      <ul class="footer-links">
+        <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+        <li><a href="advisory.html" data-i18n="nav.advisory">Farm Advisory</a></li>
+        <li><a href="disease.html" data-i18n="footer.disease">Disease Detection</a></li>
+        <li><a href="intelligence.html" data-i18n="nav.intelligence">Farm Intelligence</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="footer.technology">Technology</h4>
+      <ul class="footer-links">
+        <li><a href="https://gemini.google.com/app">Gemini AI</a></li>
+        <li><a href="https://earthengine.google.com/">Earth Engine</a></li>
+        <li><a href="https://firebase.google.com/">Firebase</a></li>
+        <li><a href="https://cloud.google.com/">Google Cloud</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2026 AgriT AI</span>
+    <span data-i18n="footer.madefor">Made for farmers, powered by open agri-data.</span>
+  </div>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/script.js"></script>
+<script src="js/api.js"></script>
+<script>
+  const form = document.getElementById("advisoryForm");
+  const submitBtn = document.getElementById("advisorySubmit");
+  const emptyState = document.getElementById("advisoryEmpty");
+  const loadingState = document.getElementById("advisoryLoading");
+  const resultState = document.getElementById("advisoryResult");
+  const errorBox = document.getElementById("advisoryError");
+  const badge = document.getElementById("advisoryBadge");
+
+  document.getElementById("useLocationBtn").addEventListener("click", () => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        document.getElementById("location").value =
+          `${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+      },
+      () => {}
+    );
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorBox.classList.remove("show");
+    resultState.classList.remove("show");
+    emptyState.style.display = "none";
+    loadingState.classList.add("show");
+    submitBtn.disabled = true;
+
+    const payload = {
+      location: document.getElementById("location").value.trim(),
+      crop: document.getElementById("crop").value,
+      soilType: document.getElementById("soilType").value,
+      notes: document.getElementById("notes").value.trim()
+    };
+
+    try {
+      const data = await getFarmAdvisory(payload);
+      document.getElementById("advisorySummary").textContent = data.summary;
+      document.getElementById("advIrrigation").textContent = data.irrigation;
+      document.getElementById("advFertilization").textContent = data.fertilization;
+      document.getElementById("advPestRisk").textContent = data.pestRisk;
+      document.getElementById("advTiming").textContent = data.timing;
+      badge.textContent = data.demo ? agritT("advisory.badgeDemo") : agritT("advisory.badge");
+      badge.className = "badge" + (data.demo ? " demo" : "");
+      resultState.classList.add("show");
+    } catch (err) {
+      errorBox.textContent = agritT("advisory.errorMsg");
+      errorBox.classList.add("show");
+      emptyState.style.display = "block";
+    } finally {
+      loadingState.classList.remove("show");
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
