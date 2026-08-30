@@ -327,7 +327,10 @@ The current interface supports:
 ## 📸 Screenshots
 
 ### Home Page
-![AgriT Home](screenshots/home.jpg)
+![AgriT Home](screenshot/IMG_20260830_104924.jpg)
+
+### Multi Language
+![AgriT Home](screenshot/.jpg)
 
 ### Disease Detection
 ![Disease Detection](screenshot/IMG_20260830_105141.jpg)
