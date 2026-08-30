@@ -330,7 +330,7 @@ The current interface supports:
 ![AgriT Home](screenshot/IMG_20260830_104924.jpg)
 
 ### Multi Language
-![AgriT Home](screenshot/.jpg)
+![AgriT Home](screenshot/IMG_20260830_105050.jpg)
 
 ### Disease Detection
 ![Disease Detection](screenshot/IMG_20260830_105141.jpg)
