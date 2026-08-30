@@ -324,6 +324,17 @@ The current interface supports:
 * हिंदी
 * मराठी
 
+## 📸 Screenshots
+
+### Home Page
+![AgriT Home](screenshots/home.jpg)
+
+### Disease Detection
+![Disease Detection](screenshots/.jpg)
+
+### Farm Advisory
+![Farm Advisory](screenshots/farm-advisory.jpg)
+
 ## Contributing
 
 Contributions are welcome.
