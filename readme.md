@@ -330,7 +330,7 @@ The current interface supports:
 ![AgriT Home](screenshots/home.jpg)
 
 ### Disease Detection
-![Disease Detection](screenshots/.jpg)
+![Disease Detection](screenshots/IMG_20260830_105141.jpg)
 
 ### Farm Advisory
 ![Farm Advisory](screenshots/farm-advisory.jpg)
