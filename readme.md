@@ -336,7 +336,7 @@ The current interface supports:
 ![Disease Detection](screenshot/IMG_20260830_105141.jpg)
 
 ### Farm Advisory
-![Farm Advisory](screenshots/farm-advisory.jpg)
+![Farm Advisory](screenshot/IMG_20260830_104648.jpg)
 
 ## Contributing
 
